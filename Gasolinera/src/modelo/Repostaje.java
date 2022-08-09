@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.Objects;
+
 public class Repostaje {
 	private String matricula;
 	private String nombre;
@@ -154,6 +156,25 @@ public class Repostaje {
 		this.litros=total/getPrecioDescuento();
 
 	
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(matricula);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Repostaje other = (Repostaje) obj;
+		return Objects.equals(matricula, other.matricula);
 	}
 	
 	

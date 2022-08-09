@@ -18,6 +18,7 @@ import modelo.Repostaje;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.FlowLayout;
 
 public class Listado extends JFrame {
 
@@ -78,14 +79,28 @@ public class Listado extends JFrame {
 		});
 		scrollPane.setViewportView(table);
 		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, "cell 0 2,grow");
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
 		JButton btnVolver = new JButton("Volver");
+		panel.add(btnVolver);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controlador.mostrarAlta();
 			}
 		});
 		btnVolver.setFont(new Font("Verdana", Font.PLAIN, 16));
-		contentPane.add(btnVolver, "cell 0 2,alignx center");
+		
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				controlador.mostrarAlta(fila);
+			}
+		});
+		btnEditar.setFont(new Font("Verdana", Font.PLAIN, 16));
+		panel.add(btnEditar);
 	}
 
 	public void setListaRepostajes(List<Repostaje> listaRepostajes) {

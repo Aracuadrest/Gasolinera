@@ -37,6 +37,8 @@ public class FormularioAlta extends JFrame {
 	private JCheckBox cbxBonificacion;
 	private JCheckBox cbxPorquetuvuelves;
 	private Principal controlador;
+	private JButton btnMostrarListado;
+	private Repostaje editar=null;
 
 	/**
 	 * Launch the application.
@@ -61,7 +63,7 @@ public class FormularioAlta extends JFrame {
 		setFont(new Font("Verdana", Font.PLAIN, 14));
 		setTitle("Nuevo Repostaje");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 353);
+		setBounds(100, 100, 483, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -163,10 +165,22 @@ public class FormularioAlta extends JFrame {
 			}
 		});
 		btnAceptar.setFont(new Font("Verdana", Font.PLAIN, 14));
-		contentPane.add(btnAceptar, "cell 1 9,alignx left");
+		contentPane.add(btnAceptar, "flowx,cell 1 9,alignx left");
+		
+		btnMostrarListado = new JButton("Mostrar Listado");
+		btnMostrarListado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.mostrarListado();
+				
+			}
+		});
+		btnMostrarListado.setFont(new Font("Verdana", Font.PLAIN, 14));
+		contentPane.add(btnMostrarListado, "cell 1 9");
 		
 				
 	}
+
+
 
 	protected void comprobarOtros() {
 		if(cbxAgrario.isSelected()&& (cbxBonificacion.isSelected() || cbxPorquetuvuelves.isSelected())) {
@@ -226,8 +240,12 @@ public class FormularioAlta extends JFrame {
 			return;
 		}
 		
+		if (editar!=null) {
+			controlador.borrarRepostaje(editar);
+		}
 		
 		controlador.insertarRepostaje(r);
+		
 	}
 
 	public void setListaCombustibles(List<Combustible> listaCombustibles) {
@@ -244,6 +262,7 @@ public class FormularioAlta extends JFrame {
 		
 	}
 	public void limpiarFormulario() {
+		this.editar=null;
 		this.txtMatricula.setText("");
 		this.txtNombre.setText("");
 		this.txtDni.setText("");
@@ -253,6 +272,20 @@ public class FormularioAlta extends JFrame {
 		this.cbxAgrario.setSelected(false);
 		this.cbxBonificacion.setSelected(false);
 		this.cbxPorquetuvuelves.setSelected(false);
+		
+	}
+
+	public void setRepostaje(Repostaje r) {
+		this.editar=r;
+		this.txtMatricula.setText(r.getMatricula());
+		this.txtNombre.setText(r.getNombre());
+		this.txtDni.setText(r.getDni());
+		this.comboBoxCombustible.setSelectedItem(r.getCombustible());
+		this.txtLitros.setText(""+r.getLitros());
+		this.txtTotal.setText(""+r.getTotal());
+		this.cbxAgrario.setSelected(r.isAgrario());
+		this.cbxBonificacion.setSelected(r.isGobierno());
+		this.cbxPorquetuvuelves.setSelected(r.isVuelves());
 		
 	}
 	

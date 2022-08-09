@@ -38,9 +38,7 @@ public class Principal {
 	
 	public void insertarRepostaje(Repostaje r) {
 		listaRepostajes.add(r);
-		fAlta.setVisible(false);
-		fListado.setListaRepostajes(listaRepostajes);
-		fListado.setVisible(true);
+		mostrarListado();
 	}
 	
 	public void mostrarAlta() {
@@ -54,6 +52,32 @@ public class Principal {
 
 	public static void main(String[] args) {
 		Principal ppal=new Principal();
+		
+	}
+
+	public void mostrarListado() {
+		fAlta.setVisible(false);
+		fListado.setListaRepostajes(listaRepostajes);
+		fListado.setVisible(true);
+		
+	}
+
+	public void editarListado() {
+			
+	}
+
+	public void mostrarAlta(int fila) {
+		fListado.setVisible(false);
+		fAlta.setListaCombustibles(listaCombustibles);
+		Repostaje r = listaRepostajes.get(fila);
+		fAlta.setRepostaje(r);
+		fAlta.setVisible(true);
+		
+	}
+
+	public void borrarRepostaje(Repostaje editar) {
+		listaRepostajes.remove(editar);
+		mostrarListado();
 		
 	}
 
