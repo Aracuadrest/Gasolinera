@@ -1,21 +1,29 @@
 package vistas;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import net.miginfocom.swing.MigLayout;
 import java.awt.Font;
-import javax.swing.JTable;
+import java.util.List;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import controladores.Principal;
+import modelo.Repostaje;
+import net.miginfocom.swing.MigLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Listado extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private Principal controlador;
 
 	/**
 	 * Launch the application.
@@ -50,12 +58,61 @@ public class Listado extends JFrame {
 		lblListado.setFont(new Font("Verdana", Font.PLAIN, 14));
 		contentPane.add(lblListado, "cell 0 0");
 		
+		JScrollPane scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, "cell 0 1,grow");
+		
 		table = new JTable();
-		contentPane.add(table, "cell 0 1,grow");
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Matrícula", "Nombre", "DNI", "Combustible", "Litros", "Total", "Desc. Agrario", "Desc. Gobierno", "Desc. vuelves"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, Object.class, Double.class, Double.class, Boolean.class, Boolean.class, Boolean.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.mostrarAlta();
+			}
+		});
 		btnVolver.setFont(new Font("Verdana", Font.PLAIN, 16));
 		contentPane.add(btnVolver, "cell 0 2,alignx center");
 	}
+
+	public void setListaRepostajes(List<Repostaje> listaRepostajes) {
+		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+		//vaciamos la tabla por si contiene algun dato anterior
+		modelo.setRowCount(0);
+		//recorro la lista y los recojo
+		for (Repostaje repostaje : listaRepostajes) {
+			Object[] fila = {
+					repostaje.getMatricula(),
+					repostaje.getNombre(),
+					repostaje.getDni(),
+					repostaje.getCombustible(),
+					repostaje.getLitros(),
+					repostaje.getTotal(),
+					repostaje.isAgrario(),
+					repostaje.isGobierno(),
+					repostaje.isVuelves()
+			};
+			//los incorporo
+			modelo.addRow(fila);
+		}	
+	}
+
+	public void setControlador(Principal controlador) {
+		this.controlador = controlador;
+	}
+	
 
 }

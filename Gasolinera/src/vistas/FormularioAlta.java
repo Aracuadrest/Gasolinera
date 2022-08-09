@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import controladores.Principal;
 import modelo.Combustible;
 import modelo.Repostaje;
 import net.miginfocom.swing.MigLayout;
@@ -35,6 +36,7 @@ public class FormularioAlta extends JFrame {
 	private JCheckBox cbxAgrario;
 	private JCheckBox cbxBonificacion;
 	private JCheckBox cbxPorquetuvuelves;
+	private Principal controlador;
 
 	/**
 	 * Launch the application.
@@ -208,15 +210,24 @@ public class FormularioAlta extends JFrame {
 					"Entrada no valida", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		if(txtLitros.getText()!=null && !txtLitros.getText().isBlank()) {
+		r.setCombustible((Combustible) comboBoxCombustible.getSelectedItem());
+		r.setAgrario(cbxAgrario.isSelected());
+		r.setGobierno(cbxBonificacion.isSelected());
+		r.setVuelves(cbxPorquetuvuelves.isSelected());
+		try {
+			if(txtLitros.getText()!=null && !txtLitros.getText().isBlank()) {
 			r.setLitros(Double.parseDouble(txtLitros.getText()));
 		}else {
 			r.setTotal(Double.parseDouble(txtTotal.getText()));
 		}
+		}catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Debe introducir un número válido en litros o total", 
+					"Número incorrecto", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 		
-		Combustible combustible= (Combustible) comboBoxCombustible.getSelectedItem();
-	
 		
+		controlador.insertarRepostaje(r);
 	}
 
 	public void setListaCombustibles(List<Combustible> listaCombustibles) {
@@ -227,4 +238,22 @@ public class FormularioAlta extends JFrame {
 		 comboBoxCombustible.setSelectedIndex(0);
 		
 	}
+
+	public void setControlador(Principal controlador) {
+		this.controlador = controlador;
+		
+	}
+	public void limpiarFormulario() {
+		this.txtMatricula.setText("");
+		this.txtNombre.setText("");
+		this.txtDni.setText("");
+		this.comboBoxCombustible.setSelectedIndex(0);
+		this.txtLitros.setText("");
+		this.txtTotal.setText("");
+		this.cbxAgrario.setSelected(false);
+		this.cbxBonificacion.setSelected(false);
+		this.cbxPorquetuvuelves.setSelected(false);
+		
+	}
+	
 }

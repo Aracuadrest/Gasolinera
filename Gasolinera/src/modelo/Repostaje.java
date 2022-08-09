@@ -152,8 +152,7 @@ public class Repostaje {
 	public void setTotal(double total) {
 		
 		this.litros=total/getPrecioDescuento();
-		
-		
+
 	
 	}
 	
